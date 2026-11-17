@@ -793,7 +793,7 @@
       <div class="w-full flex items-center justify-between mb-4 pr-10">
         <div>
           <div class="font-tactical font-bold text-xs uppercase tracking-widest text-amber-400">NLU COMBAT SIMULATOR</div>
-          <h3 class="font-display font-black text-lg sm:text-xl text-white">TACTICAL BREACH // MONSTER ELIMINATION</h3>
+          <h3 class="font-display font-black text-lg sm:text-xl text-white">TACTICAL BREACH // FAST MONSTER ELIMINATION</h3>
         </div>
         <div class="flex items-center gap-4 text-xs font-tactical font-bold">
           <div class="px-3 py-1 rounded-lg bg-cyber-950 border border-white/15 text-emerald-400">
@@ -814,22 +814,22 @@
           <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500 text-amber-400 flex items-center justify-center text-2xl mb-4 shadow-[0_0_20px_rgba(245,158,11,0.4)]">
             <i class="fa-solid fa-crosshairs"></i>
           </div>
-          <h4 class="font-display font-black text-2xl text-white mb-2">DEFEND THE NLU ZONE</h4>
+          <h4 class="font-display font-black text-2xl text-white mb-2">EXTREME PERIMETER DEFENSE</h4>
           <p class="text-xs sm:text-sm text-gray-300 max-w-md mb-6 leading-relaxed">
-            Mutant monsters are breaching the perimeter! <strong class="text-amber-400">Click or Tap</strong> to fire your rifle. Prevent monsters from reaching your tactical position.
+            Fast mutant monsters are rushing the NLU zone at high speed! <strong class="text-amber-400">Click rapidly</strong> to aim your weapon and blast them before they breach your lines.
           </p>
           <button
             onclick="startMiniGame()"
             class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-110 text-cyber-950 font-tactical font-black text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all cursor-pointer"
           >
-            <i class="fa-solid fa-play mr-2"></i>START COMBAT MISSION
+            <i class="fa-solid fa-play mr-2"></i>START FAST-PACED COMBAT
           </button>
         </div>
       </div>
 
       <div class="flex items-center justify-between w-full mt-4 text-[11px] font-tactical font-bold uppercase tracking-wider text-gray-400 px-1">
-        <span>Controls: Mouse Left Click / Tap to Shoot</span>
-        <span class="text-amber-400">Eliminate Mutants to Earn High Score</span>
+        <span>Controls: Rapid Click / Tap to Shoot Rifle</span>
+        <span class="text-amber-400">High Velocity Mutant Attack</span>
       </div>
     </div>
   </div>
@@ -1544,7 +1544,7 @@ Requesting NLU Admin confirmation.`;
     }
 
     /* ---------------------------------------------------------
-       9. NLU MINI-GAME SHOOTER ENGINE
+       9. NLU MINI-GAME FAST SHOOTER ENGINE (PLAYER WITH GUN & FAST MONSTER 👹)
        --------------------------------------------------------- */
     let gameInterval = null;
     let gameRunning = false;
@@ -1552,9 +1552,11 @@ Requesting NLU Admin confirmation.`;
     let playerHp = 100;
     let monsters = [];
     let bullets = [];
-    let particles = [];
+    let effects = [];
     let canvas, ctx;
     let playerX, playerY;
+    let muzzleFlashTimer = 0;
+    let lastGunAngle = -Math.PI / 2;
 
     function openMiniGameModal() {
       const modal = document.getElementById('minigame-modal');
@@ -1578,7 +1580,15 @@ Requesting NLU Admin confirmation.`;
       canvas.width = canvas.parentElement.clientWidth;
       canvas.height = canvas.parentElement.clientHeight;
       playerX = canvas.width / 2;
-      playerY = canvas.height - 40;
+      playerY = canvas.height - 45;
+
+      canvas.onmousemove = (e) => {
+        if (!gameRunning) return;
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        lastGunAngle = Math.atan2(mouseY - playerY, mouseX - playerX);
+      };
 
       canvas.onmousedown = (e) => {
         if (!gameRunning) return;
@@ -1595,6 +1605,7 @@ Requesting NLU Admin confirmation.`;
         const touch = e.touches[0];
         const touchX = touch.clientX - rect.left;
         const touchY = touch.clientY - rect.top;
+        lastGunAngle = Math.atan2(touchY - playerY, touchX - playerX);
         fireBullet(touchX, touchY);
       };
     }
@@ -1605,7 +1616,7 @@ Requesting NLU Admin confirmation.`;
       playerHp = 100;
       monsters = [];
       bullets = [];
-      particles = [];
+      effects = [];
       gameRunning = true;
       updateScoreUI();
       if (gameInterval) cancelAnimationFrame(gameInterval);
@@ -1614,25 +1625,29 @@ Requesting NLU Admin confirmation.`;
 
     function fireBullet(targetX, targetY) {
       const angle = Math.atan2(targetY - playerY, targetX - playerX);
-      const speed = 12;
+      lastGunAngle = angle;
+      const speed = 18;
       bullets.push({
         x: playerX,
         y: playerY,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed
       });
+      muzzleFlashTimer = 6;
     }
 
     function spawnMonster() {
-      if (Math.random() < 0.045 && monsters.length < 8) {
+      // High frequency & high speed monster spawning
+      if (Math.random() < 0.07 && monsters.length < 12) {
         const x = Math.random() * (canvas.width - 60) + 30;
         monsters.push({
           x: x,
-          y: -30,
-          radius: 18,
-          speed: Math.random() * 1.2 + 0.8,
+          y: -40,
+          radius: 20,
+          speed: Math.random() * 2.2 + 1.8, // VERY FAST SPEED
           hp: 2,
-          color: Math.random() > 0.4 ? '#ff1e38' : '#ff9d2e'
+          color: Math.random() > 0.3 ? '#ff1e38' : '#ff9d2e',
+          wobble: Math.random() * Math.PI
         });
       }
     }
@@ -1642,7 +1657,7 @@ Requesting NLU Admin confirmation.`;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Spawn
+      // Spawn Fast Monsters
       spawnMonster();
 
       // Update Bullets
@@ -1651,10 +1666,11 @@ Requesting NLU Admin confirmation.`;
         b.x += b.vx;
         b.y += b.vy;
 
+        // Draw Bullet trail
         ctx.beginPath();
-        ctx.arc(b.x, b.y, 4, 0, Math.PI * 2);
+        ctx.arc(b.x, b.y, 3.5, 0, Math.PI * 2);
         ctx.fillStyle = '#ffaa2b';
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = 12;
         ctx.shadowColor = '#ffaa2b';
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -1664,36 +1680,58 @@ Requesting NLU Admin confirmation.`;
         }
       }
 
-      // Update Monsters
+      // Update Fast Monsters 👹
       for (let i = monsters.length - 1; i >= 0; i--) {
         let m = monsters[i];
-        m.y += m.speed;
+        m.y += m.speed; // Fast descent
+        m.wobble += 0.1;
+        let currentX = m.x + Math.sin(m.wobble) * 8; // Sinusoidal tactical evasion movement
 
-        // Draw Monster (Spiky Mutant)
+        // Draw Monster 👹
         ctx.save();
-        ctx.translate(m.x, m.y);
+        ctx.translate(currentX, m.y);
+        
+        // Monster Body Aura
         ctx.beginPath();
         ctx.arc(0, 0, m.radius, 0, Math.PI * 2);
         ctx.fillStyle = m.color;
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 15;
         ctx.shadowColor = m.color;
         ctx.fill();
 
-        // Monster Horns / Eyes
+        // 👹 Monster Face details (Horns & Glowing Eyes)
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(-6, -6, 4, 4);
-        ctx.fillRect(2, -6, 4, 4);
+        ctx.fillRect(-7, -6, 4, 5);
+        ctx.fillRect(3, -6, 4, 5);
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(-6, -5, 2, 3);
+        ctx.fillRect(4, -5, 2, 3);
+
+        // Monster Fangs
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.moveTo(-5, 4);
+        ctx.lineTo(-2, 9);
+        ctx.lineTo(0, 4);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(0, 4);
+        ctx.lineTo(2, 9);
+        ctx.lineTo(5, 4);
+        ctx.fill();
+
         ctx.restore();
 
         // Check Collision with Bullets
         for (let j = bullets.length - 1; j >= 0; j--) {
           let b = bullets[j];
-          const dist = Math.hypot(b.x - m.x, b.y - m.y);
-          if (dist < m.radius + 4) {
+          const dist = Math.hypot(b.x - currentX, b.y - m.y);
+          if (dist < m.radius + 6) {
             m.hp--;
             bullets.splice(j, 1);
             if (m.hp <= 0) {
-              score += 100;
+              score += 150;
               monsters.splice(i, 1);
               updateScoreUI();
               break;
@@ -1703,7 +1741,7 @@ Requesting NLU Admin confirmation.`;
 
         // Check if Monster Reaches Bottom (Player HP damage)
         if (m.y > canvas.height - 30) {
-          playerHp -= 15;
+          playerHp -= 20;
           monsters.splice(i, 1);
           updateScoreUI();
           if (playerHp <= 0) {
@@ -1713,17 +1751,38 @@ Requesting NLU Admin confirmation.`;
         }
       }
 
-      // Draw Player Operator at bottom center
+      // Draw Real Player Shooting Gun 🔫
       ctx.save();
       ctx.translate(playerX, playerY);
+
+      // Player Body (Helmet & Tactical Vest)
       ctx.beginPath();
       ctx.arc(0, 0, 16, 0, Math.PI * 2);
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#ff1e38';
       ctx.shadowBlur = 15;
-      ctx.shadowColor = '#3b82f6';
+      ctx.shadowColor = '#ff1e38';
       ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(-3, -12, 6, 10);
+
+      // Tactical Helmet Visor
+      ctx.fillStyle = '#050507';
+      ctx.fillRect(-10, -8, 20, 7);
+
+      // Gun Barrel pointing toward last mouse/touch angle
+      ctx.rotate(lastGunAngle);
+      ctx.fillStyle = '#9ca3af';
+      ctx.fillRect(0, -4, 26, 8); // Assault rifle barrel
+
+      // Muzzle Flash
+      if (muzzleFlashTimer > 0) {
+        muzzleFlashTimer--;
+        ctx.beginPath();
+        ctx.arc(28, 0, 12, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffaa2b';
+        ctx.shadowBlur = 25;
+        ctx.shadowColor = '#ffaa2b';
+        ctx.fill();
+      }
+
       ctx.restore();
 
       gameInterval = requestAnimationFrame(gameLoop);
@@ -1742,8 +1801,8 @@ Requesting NLU Admin confirmation.`;
         <div class="w-16 h-16 rounded-2xl bg-crimson-500/20 border border-crimson-500 text-crimson-500 flex items-center justify-center text-2xl mb-4 shadow-[0_0_20px_rgba(255,30,56,0.4)]">
           <i class="fa-solid fa-skull"></i>
         </div>
-        <h4 class="font-display font-black text-2xl text-white mb-1">MISSION FAILED</h4>
-        <p class="text-xs text-gray-400 mb-2">Monsters breached the NLU defense line.</p>
+        <h4 class="font-display font-black text-2xl text-white mb-1">PERIMETER BREACHED</h4>
+        <p class="text-xs text-gray-400 mb-2">The fast monsters overwhelmed your rifle defense.</p>
         <div class="font-display font-bold text-lg text-amber-400 mb-6">FINAL SCORE: ${score}</div>
         <button
           onclick="startMiniGame()"
