@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOT LIKE.US (NLU) | Elite Free Fire Competitive Guild</title>
+
+  <!-- Google Fonts: Orbitron & Rajdhani for Esports Tactical Headings, Inter for Crisp UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 for Tactical & Esports Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            tactical: ['Rajdhani', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            cyber: {
+              950: '#050507',
+              900: '#0a0a0f',
+              850: '#101018',
+              800: '#161622',
+            },
+            crimson: {
+              500: '#ff1e38',
+              600: '#e0112b',
+              700: '#b3091f',
+              glow: 'rgba(255, 30, 56, 0.45)',
+            },
+            ember: {
+              400: '#ff9d2e',
+              500: '#ff6b00',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'spin-slow': 'spin 18s linear infinite',
+            'spin-reverse-slow': 'spinReverse 24s linear infinite',
+            'float': 'float 5s ease-in-out infinite',
+            'scanline': 'scanline 3.2s linear infinite',
+          },
+          keyframes: {
+            spinReverse: {
+              '0%': { transform: 'rotate(360deg)' },
+              '100%': { transform: 'rotate(0deg)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            scanline: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(300%)' },
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom Tactical Styling & Animations */
+    :root {
+      --crimson: #ff1e38;
+      --crimson-dark: #99081b;
+      --gold: #ffaa2b;
+      --bg-dark: #060609;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #f4f4f8;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 50% 0%, rgba(255, 30, 56, 0.14) 0%, transparent 55%),
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 42px 42px, 42px 42px;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #08080c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #ff1e38, #8c0718);
+      border-radius: 9999px;
+    }
+
+    /* Tactical Glass Panel */
+    .tactical-card {
+      background: linear-gradient(145deg, rgba(18, 18, 27, 0.85), rgba(10, 10, 15, 0.92));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 30, 56, 0.22);
+      box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .tactical-card:hover {
+      border-color: rgba(255, 30, 56, 0.6);
+      box-shadow: 0 14px 40px -8px rgba(255, 30, 56, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    /* Angular Esports Cut Corners */
+    .cyber-clip {
+      clip-path: polygon(
+        0 12px,
+        12px 0,
+        calc(100% - 12px) 0,
+        100% 12px,
+        100% calc(100% - 12px),
+        calc(100% - 12px) 100%,
+        12px 100%,
+        0 calc(100% - 12px)
+      );
+    }
+
+    /* Hexagon Logo Frame */
+    .hex-frame {
+      clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+    }
+
+    /* Glitch / Neon Text Glow */
+    .neon-text-red {
+      text-shadow: 0 0 14px rgba(255, 30, 56, 0.7), 0 0 32px rgba(255, 30, 56, 0.35);
+    }
+    .neon-text-gold {
+      text-shadow: 0 0 14px rgba(255, 170, 43, 0.65);
+    }
+
+    /* Holographic 3D Tilt Card Shine */
+    .holo-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+      position: relative;
+      overflow: hidden;
+    }
+    .holo-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 30, 56, 0.18),
+        transparent 65%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .holo-card:hover::after {
+      opacity: 1;
+    }
+
+    /* Scroll Reveal Utility */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Boot Preloader */
+    #boot-screen {
+      transition: opacity 0.55s ease, visibility 0.55s ease;
+    }
+    #boot-screen.hidden-boot {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-crimson-500 selection:text-white">
+
+  <!-- =========================================================
+       TACTICAL BOOT PRELOADER
+       ========================================================= -->
+  <div id="boot-screen" class="fixed inset-0 z-[100] bg-[#040406] flex flex-col items-center justify-center p-6">
+    <div class="relative w-24 h-24 mb-6 flex items-center justify-center">
+      <div class="absolute inset-0 rounded-full border-2 border-dashed border-crimson-500/60 animate-spin"></div>
+      <div class="absolute inset-2 rounded-full border border-amber-400/40 animate-spin-reverse-slow"></div>
+      <span class="font-display font-black text-2xl tracking-wider text-white">N<span class="text-crimson-500">L</span>U</span>
+    </div>
+    <div class="font-tactical uppercase tracking-[0.28em] text-xs text-crimson-500 font-bold mb-2">
+      INITIALIZING TACTICAL ARENA...
+    </div>
+    <div class="w-56 h-1.5 bg-white/10 rounded-full overflow-hidden">
+      <div id="boot-bar" class="h-full bg-gradient-to-r from-crimson-600 via-crimson-500 to-amber-400 w-0 transition-all duration-500"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       AMBIENT FIRE EMBER CANVAS BACKGROUND
+       ========================================================= -->
+  <canvas id="ember-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+  <!-- =========================================================
+       TOAST NOTIFICATION CONTAINER (NO ALERT() USED)
+       ========================================================= -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[90] flex flex-col gap-2.5 max-w-xs w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- =========================================================
+       TOP NAVIGATION BAR
+       ========================================================= -->
+  <header class="sticky top-0 z-50 bg-[#060609]/85 backdrop-blur-xl border-b border-crimson-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <!-- Brand Identity -->
+      <a href="#top" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-crimson-500/60 shadow-[0_0_15px_rgba(255,30,56,0.4)] group-hover:scale-105 transition-transform">
+          <img
+            src="https://i.ibb.co/XZD2rH64/IMG-0944.jpg"
+            alt="NOT LIKE.US Logo"
+            onerror="this.onerror=null;this.src='https://placehold.co/100x100/140609/ff1e38?text=NLU';"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="flex flex-col">
+          <div class="font-display font-black text-base sm:text-lg tracking-wider flex items-center gap-1 text-white">
+            <span>N</span>
+            <span class="inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded bg-crimson-500 text-white text-xs sm:text-sm font-black shadow-[0_0_12px_#ff1e38]">O</span>
+            <span>T LIKE.US</span>
+          </div>
+          <span class="text-[10px] font-tactical tracking-[0.22em] text-gray-400 uppercase">Free Fire Division</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-7 font-tactical font-bold tracking-wider text-sm uppercase text-gray-300">
+        <a href="#schedule" class="hover:text-crimson-500 transition-colors">War Schedule</a>
+        <a href="#leadership" class="hover:text-crimson-500 transition-colors">Command Roster</a>
+        <a href="#loadout" class="hover:text-crimson-500 transition-colors">Skill Rules</a>
+        <a href="#rules" class="hover:text-crimson-500 transition-colors">13 Directives</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2.5">
+        <button
+          onclick="openArenaModal('gvg')"
+          class="px-3.5 py-2 rounded-xl bg-crimson-500/15 hover:bg-crimson-500 text-crimson-400 hover:text-white border border-crimson-500/50 font-tactical font-bold text-xs sm:text-sm tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(255,30,56,0.2)] cursor-pointer"
+        >
+          <i class="fa-solid fa-crosshairs mr-1.5"></i>GvG / Tryout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       HERO SECTION
+       ========================================================= -->
+  <main id="top" class="relative z-10">
+    <section class="relative pt-10 pb-16 sm:pt-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+
+        <!-- Left Column: Title, UID Cards, Portals -->
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <!-- Status Pill -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-crimson-500/10 border border-crimson-500/35 text-crimson-400 font-tactical font-bold text-xs sm:text-sm tracking-widest uppercase mb-5">
+            <span class="w-2 h-2 rounded-full bg-crimson-500 animate-ping"></span>
+            <span>ELITE FREE FIRE COMPETITIVE GUILD</span>
+          </div>
+
+          <!-- Signature Stylized Title -->
+          <h1 class="font-display font-black text-4xl sm:text-6xl xl:text-7xl tracking-tight text-white leading-[1.08] mb-5">
+            WELCOME TO <br class="hidden sm:inline" />
+            <span class="inline-flex items-center flex-wrap justify-center lg:justify-start gap-1.5 sm:gap-2 mt-1">
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">N</span>
+              <span class="px-3 py-0.5 rounded-lg bg-crimson-500 text-white shadow-[0_0_28px_#ff1e38] animate-pulse">O</span>
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">T</span>
+              <span class="w-2"></span>
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">L</span>
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">I</span>
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">K</span>
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">E</span>
+              <span class="text-crimson-500 font-black">.</span>
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">U</span>
+              <span class="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/15">S</span>
+            </span>
+          </h1>
+
+          <p class="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8">
+            Brotherhood forged in Battle Royale fire and disciplined daily training. Two divisions, one standard: relentless activity, tactical dominance, and zero tolerance for weakness.
+          </p>
+
+          <!-- Interactive UID Copy Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto lg:mx-0">
+            <!-- Guild 1 UID -->
+            <div class="tactical-card rounded-2xl p-4 flex items-center justify-between group">
+              <div class="text-left">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span class="font-tactical font-bold text-xs tracking-widest uppercase text-gray-400">Guild 1 Official UID</span>
+                </div>
+                <div class="font-display font-bold text-xl sm:text-2xl text-white tracking-wider mt-0.5" id="uid-1">3038790506</div>
+              </div>
+              <button
+                onclick="copyText('3038790506', 'Guild 1 UID (3038790506) copied!')"
+                class="px-3.5 py-2.5 rounded-xl bg-crimson-500 hover:bg-crimson-600 active:scale-95 text-white font-tactical font-bold text-xs uppercase tracking-wider shadow-[0_0_16px_rgba(255,30,56,0.45)] transition-all flex items-center gap-1.5 cursor-pointer"
+                title="Copy Guild 1 UID"
+              >
+                <i class="fa-regular fa-copy"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+
+            <!-- Guild 2 UID -->
+            <div class="tactical-card rounded-2xl p-4 flex items-center justify-between group">
+              <div class="text-left">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                  <span class="font-tactical font-bold text-xs tracking-widest uppercase text-gray-400">Guild 2 Official UID</span>
+                </div>
+                <div class="font-display font-bold text-xl sm:text-2xl text-white tracking-wider mt-0.5" id="uid-2">3095570224</div>
+              </div>
+              <button
+                onclick="copyText('3095570224', 'Guild 2 UID (3095570224) copied!')"
+                class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-crimson-500 active:scale-95 text-white border border-white/15 hover:border-crimson-500 font-tactical font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer"
+                title="Copy Guild 2 UID"
+              >
+                <i class="fa-regular fa-copy"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Official Website Portals -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3.5">
+            <a
+              href="https://nlu-guild.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-6 py-4 rounded-2xl bg-gradient-to-r from-crimson-600 via-crimson-500 to-rose-600 hover:brightness-110 text-white font-tactical font-bold text-sm sm:text-base tracking-wider uppercase shadow-[0_0_30px_rgba(255,30,56,0.45)] transition-all flex items-center justify-center gap-2.5 group"
+            >
+              <i class="fa-solid fa-user-shield text-lg"></i>
+              <span>Guild 1 Player Portal — Account / Login</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </a>
+
+            <div class="px-5 py-4 rounded-2xl bg-cyber-850/90 border border-amber-500/35 text-amber-300 font-tactical font-bold text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2.5">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+              </span>
+              <span>Guild 2 Website — Incoming</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Animated Shield / Hexagon Emblem Showcase -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center">
+          <div class="relative w-72 h-72 sm:w-88 sm:h-88 flex items-center justify-center animate-float">
+            <!-- Outer Crimson Radar Rings -->
+            <div class="absolute inset-0 rounded-full border border-crimson-500/30 animate-ping" style="animation-duration: 3.5s;"></div>
+            <div class="absolute inset-2 rounded-full border-2 border-dashed border-crimson-500/45 animate-spin-slow"></div>
+            <div class="absolute inset-7 rounded-full border border-amber-400/30 animate-spin-reverse-slow"></div>
+
+            <!-- Glowing Backdrop -->
+            <div class="absolute inset-10 rounded-full bg-crimson-500/25 blur-2xl"></div>
+
+            <!-- Hexagon Shield Frame -->
+            <div class="relative w-56 h-56 sm:w-64 sm:h-64 hex-frame bg-gradient-to-b from-crimson-500 via-rose-700 to-amber-500 p-1.5 shadow-[0_0_50px_rgba(255,30,56,0.65)]">
+              <div class="w-full h-full hex-frame bg-cyber-950 overflow-hidden relative">
+                <img
+                  src="https://i.ibb.co/XZD2rH64/IMG-0944.jpg"
+                  alt="NOT LIKE.US Official Guild Emblem"
+                  onerror="this.onerror=null;this.src='https://placehold.co/500x500/120508/ff1e38?text=NOT+LIKE.US';"
+                  class="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-500"
+                />
+                <!-- Subtle Tactical Scanline -->
+                <div class="absolute inset-x-0 h-12 bg-gradient-to-b from-transparent via-crimson-500/25 to-transparent animate-scanline pointer-events-none"></div>
+              </div>
+            </div>
+
+            <!-- Floating Tactical Telemetry Badges -->
+            <div class="absolute -bottom-3 px-4 py-1.5 rounded-xl bg-cyber-900/95 border border-crimson-500/50 shadow-lg flex items-center gap-3 text-xs font-tactical font-bold tracking-wider uppercase">
+              <span class="text-crimson-400"><i class="fa-solid fa-fire mr-1"></i>150+ GW BR PTS</span>
+              <span class="text-gray-600">|</span>
+              <span class="text-amber-400"><i class="fa-solid fa-trophy mr-1"></i>2,500+ GUILD PTS</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================
+         2. LIVE OPERATIONS & WEEKLY SCHEDULE TRACKER
+         ========================================================= -->
+    <section id="schedule" class="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+      <div class="tactical-card rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden">
+        <!-- Corner Accent -->
+        <div class="absolute top-0 right-0 w-40 h-40 bg-crimson-500/10 blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+          <div>
+            <div class="inline-flex items-center gap-2 text-crimson-400 font-tactical font-bold text-xs tracking-[0.25em] uppercase mb-1.5">
+              <i class="fa-solid fa-satellite-dish"></i>
+              <span>LIVE OPERATIONS COMMAND</span>
+            </div>
+            <h2 class="font-display font-black text-2xl sm:text-3xl text-white tracking-wide">
+              WEEKLY GUILD WAR & TRAINING RADAR
+            </h2>
+          </div>
+
+          <!-- Dynamic Today Status Banner (Populated via JS) -->
+          <div id="live-status-pill" class="px-5 py-3.5 rounded-2xl border flex items-center gap-3.5 shadow-lg">
+            <!-- JS injects active status here -->
+          </div>
+        </div>
+
+        <!-- Dynamic Protocol Alert Box (Populated via JS) -->
+        <div id="live-protocol-alert" class="rounded-2xl p-4 sm:p-5 mb-8 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <!-- JS injects detailed warning/directive here -->
+        </div>
+
+        <!-- 7-Day Interactive Schedule Strip -->
+        <div id="week-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+          <!-- JS renders Sunday through Saturday cards -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         3. LEADERSHIP ROSTER (INTERACTIVE GUILD 1 / GUILD 2 SWITCHER)
+         ========================================================= -->
+    <section id="leadership" class="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <div class="inline-flex items-center gap-2 text-crimson-400 font-tactical font-bold text-xs tracking-[0.25em] uppercase mb-1.5">
+            <i class="fa-solid fa-crown"></i>
+            <span>HIGH COMMAND & ADMINISTRATION</span>
+          </div>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-white tracking-wide">
+            GUILD PERSONNEL ROSTER
+          </h2>
+        </div>
+
+        <!-- Animated Roster Switcher Tabs -->
+        <div class="inline-flex p-1.5 rounded-2xl bg-cyber-850 border border-white/10 self-start md:self-auto">
+          <button
+            onclick="switchRoster('guild1')"
+            id="tab-guild1"
+            class="roster-tab px-4 sm:px-5 py-2.5 rounded-xl font-tactical font-bold text-xs sm:text-sm uppercase tracking-wider transition-all bg-crimson-500 text-white shadow-[0_0_18px_rgba(255,30,56,0.45)] cursor-pointer"
+          >
+            Guild 1 Command
+          </button>
+          <button
+            onclick="switchRoster('guild2')"
+            id="tab-guild2"
+            class="roster-tab px-4 sm:px-5 py-2.5 rounded-xl font-tactical font-bold text-xs sm:text-sm uppercase tracking-wider transition-all text-gray-400 hover:text-white cursor-pointer"
+          >
+            Guild 2 Command
+          </button>
+          <button
+            onclick="switchRoster('all')"
+            id="tab-all"
+            class="roster-tab px-4 sm:px-5 py-2.5 rounded-xl font-tactical font-bold text-xs sm:text-sm uppercase tracking-wider transition-all text-gray-400 hover:text-white cursor-pointer"
+          >
+            All Leaders
+          </button>
+        </div>
+      </div>
+
+      <!-- Leadership Cards Grid -->
+      <div id="roster-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- JS renders 3D holographic cards -->
+      </div>
+    </section>
+
+    <!-- =========================================================
+         4. PERMITTED DUEL & TRAINING SKILL LOADOUT (RULE #6)
+         ========================================================= -->
+    <section id="loadout" class="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+      <div class="tactical-card rounded-3xl p-6 sm:p-8 lg:p-10 border-crimson-500/35">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <div class="inline-flex items-center gap-2 text-amber-400 font-tactical font-bold text-xs tracking-[0.25em] uppercase mb-1.5">
+              <i class="fa-solid fa-gun"></i>
+              <span>RULE #06 // COMBAT LOADOUT PROTOCOL</span>
+            </div>
+            <h2 class="font-display font-black text-2xl sm:text-3xl text-white tracking-wide">
+              OFFICIAL DUEL & TRAINING SKILL MATRIX
+            </h2>
+          </div>
+          <span class="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 font-tactical font-bold text-xs uppercase tracking-wider text-gray-300 self-start md:self-auto">
+            Strictly Enforced In Trainings & Duels
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Permitted Active Skills -->
+          <div class="rounded-2xl bg-emerald-500/5 border border-emerald-500/35 p-6 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 font-tactical font-bold text-xs uppercase tracking-wider">
+                <i class="fa-solid fa-circle-check mr-1"></i>Permitted Active
+              </span>
+              <i class="fa-solid fa-bolt text-emerald-400 text-xl"></i>
+            </div>
+            <h3 class="font-display font-black text-2xl text-white mb-2">ALOK <span class="text-gray-500 text-lg">OR</span> K</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              Only <strong class="text-emerald-400">DJ Alok</strong> or <strong class="text-emerald-400">Captain Booyah (K)</strong> are authorized as your active character skill during official duels and guild trainings.
+            </p>
+          </div>
+
+          <!-- Permitted Passive Skills -->
+          <div class="rounded-2xl bg-sky-500/5 border border-sky-500/35 p-6 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-lg bg-sky-500/20 text-sky-400 font-tactical font-bold text-xs uppercase tracking-wider">
+                <i class="fa-solid fa-layer-group mr-1"></i>Permitted Passives
+              </span>
+              <i class="fa-solid fa-shield-halved text-sky-400 text-xl"></i>
+            </div>
+            <h3 class="font-display font-black text-2xl text-white mb-2">ALL PASSIVES</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              Combine your chosen active skill with <strong class="text-sky-400">any passive skill</strong> of your choice—with one strict exception.
+            </p>
+          </div>
+
+          <!-- Banned Character Skill: SONIA -->
+          <div class="rounded-2xl bg-crimson-500/10 border-2 border-crimson-500 p-6 relative overflow-hidden shadow-[0_0_25px_rgba(255,30,56,0.2)]">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-lg bg-crimson-500 text-white font-tactical font-black text-xs uppercase tracking-widest animate-pulse">
+                <i class="fa-solid fa-ban mr-1"></i>BANNED / RESTRICTED
+              </span>
+              <i class="fa-solid fa-skull-crossbones text-crimson-500 text-xl"></i>
+            </div>
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="font-display font-black text-2xl text-crimson-400 line-through decoration-2 decoration-white">SONIA</h3>
+              <span class="px-2 py-0.5 rounded border border-crimson-500 text-crimson-400 font-tactical font-black text-[11px] uppercase rotate-[-4deg]">
+                FORBIDDEN
+              </span>
+            </div>
+            <p class="text-gray-200 text-sm leading-relaxed">
+              Equipping <strong class="text-crimson-400">Sonia</strong> in guild trainings or official duels is strictly prohibited and counts as a rule violation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         5. GUILD RULES & CODE OF CONDUCT (ALL 13 DIRECTIVES)
+         ========================================================= -->
+    <section id="rules" class="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+        <div>
+          <div class="inline-flex items-center gap-2 text-crimson-400 font-tactical font-bold text-xs tracking-[0.25em] uppercase mb-1.5">
+            <i class="fa-solid fa-book-skull"></i>
+            <span>CODE OF CONDUCT</span>
+          </div>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-white tracking-wide">
+            THE 13 GUILD DIRECTIVES
+          </h2>
+        </div>
+
+        <!-- Search & Category Filter Controls -->
+        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+          <div class="relative flex-1 sm:w-64">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+            <input
+              type="text"
+              id="rule-search"
+              oninput="filterRules()"
+              placeholder="Search rules (e.g. Sonia, War, 150)..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-cyber-850 border border-white/15 focus:border-crimson-500 focus:outline-none text-sm text-white placeholder-gray-500"
+            />
+          </div>
+          <select
+            id="rule-category"
+            onchange="filterRules()"
+            class="px-4 py-2.5 rounded-xl bg-cyber-850 border border-white/15 focus:border-crimson-500 focus:outline-none text-sm font-tactical font-bold uppercase tracking-wider text-gray-200 cursor-pointer"
+          >
+            <option value="all">All 13 Rules</option>
+            <option value="war">Wars & Activity</option>
+            <option value="combat">Training & Duels</option>
+            <option value="conduct">Community & Admins</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Rules Grid -->
+      <div id="rules-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <!-- JS populates all 13 exact rules -->
+      </div>
+    </section>
+
+    <!-- =========================================================
+         6. CALL TO ACTION BANNER (GVG CHALLENGE & RECRUITMENT)
+         ========================================================= -->
+    <section class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+      <div class="rounded-3xl bg-gradient-to-r from-crimson-700/30 via-cyber-850 to-amber-600/20 border border-crimson-500/45 p-8 sm:p-12 text-center relative overflow-hidden">
+        <div class="max-w-3xl mx-auto relative z-10">
+          <span class="inline-block px-3.5 py-1 rounded-full bg-crimson-500/20 border border-crimson-500/40 text-crimson-300 font-tactical font-bold text-xs tracking-widest uppercase mb-4">
+            ARENA INTERACTION TERMINAL
+          </span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-white mb-4">
+            READY TO JOIN THE RANKS OR CHALLENGE NLU?
+          </h2>
+          <p class="text-gray-300 text-sm sm:text-base mb-8">
+            Verify your weekly points readiness before requesting recruitment, or generate an official Guild vs Guild (GvG) challenge brief to send directly to Guild Admins.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onclick="openArenaModal('recruit')"
+              class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-crimson-500 hover:bg-crimson-600 text-white font-tactical font-bold text-sm sm:text-base uppercase tracking-wider shadow-[0_0_25px_rgba(255,30,56,0.5)] transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-user-check mr-2"></i>Recruit Readiness Check
+            </button>
+            <button
+              onclick="openArenaModal('gvg')"
+              class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-tactical font-bold text-sm sm:text-base uppercase tracking-wider transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-swords mr-2"></i>Generate GvG Challenge
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="relative z-10 border-t border-white/10 bg-cyber-950/95 py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <img
+          src="https://i.ibb.co/XZD2rH64/IMG-0944.jpg"
+          alt="NLU Emblem"
+          onerror="this.onerror=null;this.src='https://placehold.co/80x80/140609/ff1e38?text=NLU';"
+          class="w-10 h-10 rounded-xl object-cover border border-crimson-500/40"
+        />
+        <div>
+          <div class="font-display font-black text-white text-sm tracking-wider">NOT LIKE.US (NLU)</div>
+          <div class="text-xs text-gray-500">Guild 1 UID: 3038790506 &bull; Guild 2 UID: 3095570224</div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-tactical font-bold uppercase tracking-wider text-gray-400">
+        <a href="https://nlu-guild.vercel.app" target="_blank" rel="noopener noreferrer" class="hover:text-crimson-400 transition-colors">
+          Guild 1 Website
+        </a>
+        <span>&bull;</span>
+        <span class="text-amber-400/80">Guild 2 Website Incoming</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       INTERACTIVE ARENA MODAL (GVG GENERATOR & RECRUIT CHECKLIST)
+       ========================================================= -->
+  <div id="arena-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="tactical-card rounded-3xl max-w-lg w-full p-6 sm:p-8 relative border-crimson-500/50 shadow-[0_0_50px_rgba(255,30,56,0.3)]">
+      <!-- Close Button -->
+      <button
+        onclick="closeArenaModal()"
+        class="absolute top-5 right-5 w-9 h-9 rounded-xl bg-white/10 hover:bg-crimson-500 text-gray-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+        aria-label="Close Modal"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Modal Mode Switcher -->
+      <div class="inline-flex p-1 rounded-xl bg-cyber-950 border border-white/10 mb-6">
+        <button
+          onclick="setModalTab('recruit')"
+          id="modal-tab-recruit"
+          class="px-4 py-2 rounded-lg font-tactical font-bold text-xs uppercase tracking-wider bg-crimson-500 text-white cursor-pointer"
+        >
+          Recruit Readiness
+        </button>
+        <button
+          onclick="setModalTab('gvg')"
+          id="modal-tab-gvg"
+          class="px-4 py-2 rounded-lg font-tactical font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white cursor-pointer"
+        >
+          GvG Challenge
+        </button>
+      </div>
+
+      <!-- TAB 1: RECRUIT READINESS CHECKLIST -->
+      <div id="modal-panel-recruit">
+        <h3 class="font-display font-black text-xl text-white mb-1">RECRUITMENT ELIGIBILITY</h3>
+        <p class="text-xs text-gray-400 mb-5">Confirm all 4 guild standards before contacting Recruitment Officer <strong class="text-white">HIM 🐐</strong> or copying a Guild UID.</p>
+
+        <div class="space-y-3 mb-6">
+          <label class="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-crimson-500/40">
+            <input type="checkbox" class="recruit-check mt-1 accent-crimson-500 w-4 h-4" onchange="updateRecruitStatus()" />
+            <span class="text-sm text-gray-200">I can achieve at least <strong>150+ Guild War BR points</strong> & <strong>2,500+ overall guild points</strong> every week.</span>
+          </label>
+          <label class="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-crimson-500/40">
+            <input type="checkbox" class="recruit-check mt-1 accent-crimson-500 w-4 h-4" onchange="updateRecruitStatus()" />
+            <span class="text-sm text-gray-200">I am available for <strong>Guild Wars BR (Wed, Fri, Sat)</strong> and <strong>daily compulsory training</strong>.</span>
+          </label>
+          <label class="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-crimson-500/40">
+            <input type="checkbox" class="recruit-check mt-1 accent-crimson-500 w-4 h-4" onchange="updateRecruitStatus()" />
+            <span class="text-sm text-gray-200">I will <strong>NEVER play Ranked</strong> during Guild Wars BR designated hours.</span>
+          </label>
+          <label class="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-crimson-500/40">
+            <input type="checkbox" class="recruit-check mt-1 accent-crimson-500 w-4 h-4" onchange="updateRecruitStatus()" />
+            <span class="text-sm text-gray-200">I have <strong>Alok or K</strong> ready for duels and will not equip <strong>Sonia</strong>.</span>
+          </label>
+        </div>
+
+        <div id="recruit-result" class="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+          <div class="font-tactical font-bold text-sm uppercase tracking-wider text-gray-400">
+            Check all 4 requirements to unlock UID apply buttons
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: GVG CHALLENGE GENERATOR -->
+      <div id="modal-panel-gvg" class="hidden">
+        <h3 class="font-display font-black text-xl text-white mb-1">GUILD VS GUILD CHALLENGE</h3>
+        <p class="text-xs text-gray-400 mb-4">Rule #9: Contact guild admins in cases of any Guild vs Guild challenge. Generate your formatted challenge brief below:</p>
+
+        <div class="space-y-3 mb-4">
+          <div>
+            <label class="block text-xs font-tactical font-bold uppercase tracking-wider text-gray-400 mb-1">Your Guild Name & UID</label>
+            <input id="gvg-guild" type="text" placeholder="e.g. APEX PREDATORS (UID: 3011223344)" class="w-full px-3.5 py-2.5 rounded-xl bg-cyber-950 border border-white/15 text-sm text-white focus:border-crimson-500 focus:outline-none" oninput="updateGvgPreview()" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-tactical font-bold uppercase tracking-wider text-gray-400 mb-1">Format</label>
+              <select id="gvg-format" class="w-full px-3 py-2.5 rounded-xl bg-cyber-950 border border-white/15 text-sm text-white focus:border-crimson-500 focus:outline-none" onchange="updateGvgPreview()">
+                <option value="4v4 Clash Squad">4v4 Clash Squad</option>
+                <option value="6v6 Clash Squad">6v6 Clash Squad</option>
+                <option value="Full Map BR Scrim">Full Map BR Scrim</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-tactical font-bold uppercase tracking-wider text-gray-400 mb-1">Target Division</label>
+              <select id="gvg-target" class="w-full px-3 py-2.5 rounded-xl bg-cyber-950 border border-white/15 text-sm text-white focus:border-crimson-500 focus:outline-none" onchange="updateGvgPreview()">
+                <option value="NLU Guild 1 (Leader: Mr P)">NLU Guild 1 (Mr P)</option>
+                <option value="NLU Guild 2 (Leader: MAMORU)">NLU Guild 2 (MAMORU)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-tactical font-bold uppercase tracking-wider text-gray-400 mb-1">Proposed Day & Time</label>
+            <input id="gvg-time" type="text" placeholder="e.g. Thursday 8:00 PM WAT" class="w-full px-3.5 py-2.5 rounded-xl bg-cyber-950 border border-white/15 text-sm text-white focus:border-crimson-500 focus:outline-none" oninput="updateGvgPreview()" />
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-cyber-950 border border-crimson-500/30 font-mono text-xs text-gray-300 whitespace-pre-line mb-4" id="gvg-preview"></div>
+
+        <button
+          onclick="copyGvgMessage()"
+          class="w-full py-3.5 rounded-xl bg-crimson-500 hover:bg-crimson-600 text-white font-tactical font-bold text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(255,30,56,0.4)] transition-all cursor-pointer"
+        >
+          <i class="fa-regular fa-copy mr-2"></i>Copy Challenge Brief For Admins
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       JAVASCRIPT LOGIC (PARTICLES, SCHEDULE, ROSTER, RULES, UI)
+       ========================================================= -->
+  <script>
+    /* ---------------------------------------------------------
+       1. DATA DEFINITIONS (EXACT CONTENT FROM GUILD DESCRIPTION)
+       --------------------------------------------------------- */
+    const ROSTER_DATA = [
+      // Guild 1 Personnel
+      {
+        guild: 'guild1',
+        guildLabel: 'GUILD 1',
+        role: 'Guild Leader',
+        name: 'Mr P',
+        tier: 'supreme',
+        icon: 'fa-crown',
+        badge: 'COMMANDER-IN-CHIEF'
+      },
+      {
+        guild: 'guild1',
+        guildLabel: 'GUILD 1',
+        role: 'Acting Guild Leader',
+        name: 'TSUKI',
+        tier: 'acting',
+        icon: 'fa-star',
+        badge: 'SECOND IN COMMAND'
+      },
+      {
+        guild: 'guild1',
+        guildLabel: 'GUILD 1',
+        role: 'Elder 1',
+        name: 'ALEXA',
+        tier: 'elder',
+        icon: 'fa-shield-halved',
+        badge: 'SENIOR ELDER'
+      },
+      {
+        guild: 'guild1',
+        guildLabel: 'GUILD 1',
+        role: 'Elder 2',
+        name: 'SCARZ',
+        tier: 'elder',
+        icon: 'fa-shield-halved',
+        badge: 'SENIOR ELDER'
+      },
+      {
+        guild: 'guild1',
+        guildLabel: 'GUILD 1',
+        role: 'Elder 3',
+        name: 'KAZUMA',
+        tier: 'elder',
+        icon: 'fa-shield-halved',
+        badge: 'SENIOR ELDER'
+      },
+      {
+        guild: 'guild1',
+        guildLabel: 'GUILD 1',
+        role: 'Recruitment Officer',
+        name: 'HIM 🐐',
+        tier: 'officer',
+        icon: 'fa-user-plus',
+        badge: 'SCOUTING & TRYOUTS'
+      },
+
+      // Guild 2 Personnel
+      {
+        guild: 'guild2',
+        guildLabel: 'GUILD 2',
+        role: 'Guild Leader',
+        name: 'MAMORU',
+        tier: 'supreme',
+        icon: 'fa-crown',
+        badge: 'DIVISION 2 LEADER'
+      },
+      {
+        guild: 'guild2',
+        guildLabel: 'GUILD 2',
+        role: 'Acting Guild Leader',
+        name: 'FORBID',
+        tier: 'acting',
+        icon: 'fa-star',
+        badge: 'ACTING COMMANDER'
+      },
+      {
+        guild: 'guild2',
+        guildLabel: 'GUILD 2',
+        role: 'Elder 1',
+        name: 'ZENO',
+        tier: 'elder',
+        icon: 'fa-shield-halved',
+        badge: 'DIVISION ELDER'
+      },
+      {
+        guild: 'guild2',
+        guildLabel: 'GUILD 2',
+        role: 'Elder 2',
+        name: 'OMEGA',
+        tier: 'elder',
+        icon: 'fa-shield-halved',
+        badge: 'DIVISION ELDER'
+      },
+      {
+        guild: 'guild2',
+        guildLabel: 'GUILD 2',
+        role: 'Elder 3',
+        name: 'SLAMRANZO',
+        tier: 'elder',
+        icon: 'fa-shield-halved',
+        badge: 'DIVISION ELDER'
+      },
+      {
+        guild: 'guild2',
+        guildLabel: 'GUILD 2',
+        role: 'Elder 4',
+        name: 'REDDOT',
+        tier: 'elder',
+        icon: 'fa-shield-halved',
+        badge: 'DIVISION ELDER'
+      }
+    ];
+
+    const RULES_DATA = [
+      {
+        num: '01',
+        category: 'war',
+        title: 'Weekly Activity Quotas',
+        text: 'To tackle in-activeness, members with less than 150 Guild War BR points and 2,500 overall guild points respectively at the end of each week, will be kicked.',
+        severity: 'EXPULSION RISK'
+      },
+      {
+        num: '02',
+        category: 'conduct',
+        title: 'Squad Bonding & Teamplay',
+        text: 'Every member is mandated to play with each other so as to socialize with and strengthen our bond as a guild.',
+        severity: 'MANDATORY'
+      },
+      {
+        num: '03',
+        category: 'combat',
+        title: 'Daily Compulsory Training',
+        text: 'Guild training every day apart from Wednesday, Friday and Saturday being wars, attendance is compulsory.',
+        severity: 'COMPULSORY'
+      },
+      {
+        num: '04',
+        category: 'war',
+        title: 'Mandatory Participation',
+        text: 'Non-participation in Guild Wars and Guild training or any other Guild activities will result in expulsion (kicking) from the guild.',
+        severity: 'EXPULSION RISK'
+      },
+      {
+        num: '05',
+        category: 'conduct',
+        title: 'Respect & Peaceful Vawulence',
+        text: "Respect the admins and fellow members. Peaceful 'vawulence' is allowed but don't overstep boundaries.",
+        severity: 'COMMUNITY'
+      },
+      {
+        num: '06',
+        category: 'combat',
+        title: 'Duel & Training Character Skills',
+        text: 'In guild trainings and official duels, permitted character skills are Alok or K and another passive skill except for Sonia.',
+        severity: 'SONIA BANNED'
+      },
+      {
+        num: '07',
+        category: 'conduct',
+        title: 'Links & Promo Restrictions',
+        text: 'No sending of links or advert promos except for Free Fire related contents and you must seek an admin consent first before dropping.',
+        severity: 'ADMIN CONSENT'
+      },
+      {
+        num: '08',
+        category: 'conduct',
+        title: 'Zero NSFW / Nudity Policy',
+        text: 'No sending of porn or contents associated with nudity.',
+        severity: 'STRICT BAN'
+      },
+      {
+        num: '09',
+        category: 'combat',
+        title: 'Guild vs Guild (GvG) Challenges',
+        text: 'Contact guild admins in cases of any guild vs guild challenge.',
+        severity: 'ADMIN PROTOCOL'
+      },
+      {
+        num: '10',
+        category: 'war',
+        title: 'No Ranked During Guild Wars BR',
+        text: 'Playing ranked matches during time designated for Guild Wars BR will result in instant expulsion. If there are no members online to team up with, wait or play casual modes (Training Grounds or Lone Wolf) so you can be easily invited.',
+        severity: 'INSTANT KICK'
+      },
+      {
+        num: '11',
+        category: 'conduct',
+        title: 'Zero Tolerance Enforcement',
+        text: 'VIOLATION of laid rules will result in instant expulsion from the guild without warning.',
+        severity: 'NO WARNING'
+      },
+      {
+        num: '12',
+        category: 'war',
+        title: 'Guild Wars BR Schedule',
+        text: 'Guild Wars BR is every Wednesday, Friday and Saturday.',
+        severity: 'WAR DAYS'
+      },
+      {
+        num: '13',
+        category: 'conduct',
+        title: 'WhatsApp Bot Tagging Rights',
+        text: 'Only admins have the right to use WhatsApp bot (Tagging).',
+        severity: 'ADMINS ONLY'
+      }
+    ];
+
+    /* ---------------------------------------------------------
+       2. BOOT PRELOADER & SCROLL REVEAL
+       --------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      const bootBar = document.getElementById('boot-bar');
+      const bootScreen = document.getElementById('boot-screen');
+
+      setTimeout(() => {
+        if (bootBar) bootBar.style.width = '100%';
+      }, 60);
+
+      setTimeout(() => {
+        if (bootScreen) bootScreen.classList.add('hidden-boot');
+      }, 650);
+
+      renderSchedule();
+      switchRoster('guild1');
+      filterRules();
+      updateGvgPreview();
+      initScrollReveal();
+      initEmberParticles();
+    });
+
+    function initScrollReveal() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    }
+
+    /* ---------------------------------------------------------
+       3. CLIPBOARD COPY & CUSTOM TOAST SYSTEM (NO ALERT())
+       --------------------------------------------------------- */
+    function copyText(text, message) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast(message || 'Copied to clipboard!', 'success');
+      } catch (err) {
+        showToast('Unable to copy automatically. Please copy manually.', 'error');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3.5 rounded-2xl border backdrop-blur-xl shadow-2xl transform transition-all duration-300 translate-y-4 opacity-0 ${
+        isSuccess
+          ? 'bg-cyber-900/95 border-crimson-500 text-white shadow-[0_0_25px_rgba(255,30,56,0.35)]'
+          : 'bg-cyber-900/95 border-amber-500 text-amber-200'
+      }`;
+
+      toast.innerHTML = `
+        <div class="w-7 h-7 rounded-lg ${isSuccess ? 'bg-crimson-500/20 text-crimson-400' : 'bg-amber-500/20 text-amber-400'} flex items-center justify-center shrink-0">
+          <i class="fa-solid ${isSuccess ? 'fa-check' : 'fa-triangle-exclamation'}"></i>
+        </div>
+        <span class="text-xs sm:text-sm font-medium">${message}</span>
+      `;
+
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    /* ---------------------------------------------------------
+       4. LIVE WEEKLY SCHEDULE & DAY DETECTOR
+       --------------------------------------------------------- */
+    function renderSchedule() {
+      const days = [
+        { name: 'Sunday', short: 'SUN', type: 'training' },
+        { name: 'Monday', short: 'MON', type: 'training' },
+        { name: 'Tuesday', short: 'TUE', type: 'training' },
+        { name: 'Wednesday', short: 'WED', type: 'war' },
+        { name: 'Thursday', short: 'THU', type: 'training' },
+        { name: 'Friday', short: 'FRI', type: 'war' },
+        { name: 'Saturday', short: 'SAT', type: 'war' }
+      ];
+
+      const todayIndex = new Date().getDay(); // 0 = Sunday ... 6 = Saturday
+      const todayObj = days[todayIndex];
+      const isWarDay = todayObj.type === 'war';
+
+      // Update Live Status Pill
+      const pill = document.getElementById('live-status-pill');
+      if (isWarDay) {
+        pill.className = 'px-5 py-3.5 rounded-2xl bg-crimson-500/15 border border-crimson-500 flex items-center gap-3.5 shadow-[0_0_25px_rgba(255,30,56,0.25)]';
+        pill.innerHTML = `
+          <span class="w-3 h-3 rounded-full bg-crimson-500 animate-ping shrink-0"></span>
+          <div>
+            <div class="text-[11px] font-tactical font-bold uppercase tracking-widest text-crimson-300">TODAY IS ${todayObj.name.toUpperCase()}</div>
+            <div class="font-display font-black text-sm sm:text-base text-white">GUILD WARS BR ACTIVE</div>
+          </div>
+        `;
+      } else {
+        pill.className = 'px-5 py-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/60 flex items-center gap-3.5 shadow-[0_0_25px_rgba(245,158,11,0.18)]';
+        pill.innerHTML = `
+          <span class="w-3 h-3 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
+          <div>
+            <div class="text-[11px] font-tactical font-bold uppercase tracking-widest text-amber-300">TODAY IS ${todayObj.name.toUpperCase()}</div>
+            <div class="font-display font-black text-sm sm:text-base text-white">COMPULSORY GUILD TRAINING</div>
+          </div>
+        `;
+      }
+
+      // Update Dynamic Protocol Alert Box
+      const alertBox = document.getElementById('live-protocol-alert');
+      if (isWarDay) {
+        alertBox.className = 'rounded-2xl p-4 sm:p-5 mb-8 bg-crimson-500/10 border border-crimson-500/50 flex flex-col sm:flex-row items-start sm:items-center gap-4';
+        alertBox.innerHTML = `
+          <div class="w-11 h-11 rounded-xl bg-crimson-500 text-white flex items-center justify-center text-lg shrink-0 shadow-[0_0_15px_#ff1e38]">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div class="text-sm text-gray-200 leading-relaxed">
+            <strong class="text-crimson-400 font-tactical uppercase tracking-wider text-base block sm:inline mr-1">WAR DAY DIRECTIVE (RULE #10):</strong>
+            Playing <strong>Ranked matches</strong> during time designated for Guild Wars BR will result in <strong>instant expulsion</strong>. If no members are online to team up with, wait or play casual modes (<strong>Training Grounds</strong> or <strong>Lone Wolf</strong>) so you can be easily invited.
+          </div>
+        `;
+      } else {
+        alertBox.className = 'rounded-2xl p-4 sm:p-5 mb-8 bg-amber-500/10 border border-amber-500/40 flex flex-col sm:flex-row items-start sm:items-center gap-4';
+        alertBox.innerHTML = `
+          <div class="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-lg shrink-0">
+            <i class="fa-solid fa-crosshairs"></i>
+          </div>
+          <div class="text-sm text-gray-200 leading-relaxed">
+            <strong class="text-amber-400 font-tactical uppercase tracking-wider text-base block sm:inline mr-1">TRAINING DAY DIRECTIVE (RULES #03 & #06):</strong>
+            Attendance in daily Guild Training is <strong>compulsory</strong>. Permitted character skills in trainings and official duels: <strong>Alok or K</strong> + passive skills (<strong>NO Sonia</strong>).
+          </div>
+        `;
+      }
+
+      // Render 7-Day Strip
+      const weekGrid = document.getElementById('week-grid');
+      weekGrid.innerHTML = days
+        .map((day, idx) => {
+          const isToday = idx === todayIndex;
+          const isWar = day.type === 'war';
+
+          return `
+            <div class="rounded-2xl p-4 border relative transition-all ${
+              isToday
+                ? isWar
+                  ? 'bg-crimson-500/20 border-crimson-500 shadow-[0_0_25px_rgba(255,30,56,0.3)] scale-[1.02]'
+                  : 'bg-amber-500/20 border-amber-400 shadow-[0_0_25px_rgba(245,158,11,0.25)] scale-[1.02]'
+                : isWar
+                ? 'bg-crimson-950/20 border-crimson-500/30'
+                : 'bg-white/[0.03] border-white/10'
+            }">
+              ${
+                isToday
+                  ? `<span class="absolute -top-2.5 right-3 px-2 py-0.5 rounded bg-white text-cyber-950 font-tactical font-black text-[10px] tracking-widest uppercase">TODAY</span>`
+                  : ''
+              }
+              <div class="font-display font-bold text-sm ${isToday ? 'text-white' : 'text-gray-400'} mb-2">${day.short}</div>
+              <div class="flex items-center gap-1.5 font-tactical font-bold text-xs uppercase tracking-wider ${
+                isWar ? 'text-crimson-400' : 'text-amber-400'
+              }">
+                <i class="fa-solid ${isWar ? 'fa-fire' : 'fa-dumbbell'}"></i>
+                <span>${isWar ? 'Guild War BR' : 'Training'}</span>
+              </div>
+              <div class="text-[11px] text-gray-400 mt-1">
+                ${isWar ? 'No Ranked Allowed' : 'Compulsory'}
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    /* ---------------------------------------------------------
+       5. ROSTER SWITCHER & 3D HOLOGRAPHIC CARD TILT
+       --------------------------------------------------------- */
+    function switchRoster(filter) {
+      // Update tab button styles
+      document.querySelectorAll('.roster-tab').forEach((btn) => {
+        btn.className = 'roster-tab px-4 sm:px-5 py-2.5 rounded-xl font-tactical font-bold text-xs sm:text-sm uppercase tracking-wider transition-all text-gray-400 hover:text-white cursor-pointer';
+      });
+      const activeBtn = document.getElementById(`tab-${filter}`);
+      if (activeBtn) {
+        activeBtn.className = 'roster-tab px-4 sm:px-5 py-2.5 rounded-xl font-tactical font-bold text-xs sm:text-sm uppercase tracking-wider transition-all bg-crimson-500 text-white shadow-[0_0_18px_rgba(255,30,56,0.45)] cursor-pointer';
+      }
+
+      const filtered = filter === 'all' ? ROSTER_DATA : ROSTER_DATA.filter((m) => m.guild === filter);
+      const grid = document.getElementById('roster-grid');
+
+      grid.innerHTML = filtered
+        .map((member) => {
+          const isSupreme = member.tier === 'supreme';
+          const isActing = member.tier === 'acting';
+          const isOfficer = member.tier === 'officer';
+
+          const accentBorder = isSupreme
+            ? 'border-amber-400/60 shadow-[0_0_25px_rgba(251,191,36,0.15)]'
+            : isActing
+            ? 'border-crimson-500/50'
+            : 'border-white/15';
+
+          const iconColor = isSupreme
+            ? 'bg-amber-400/20 text-amber-300 border-amber-400/50'
+            : isActing
+            ? 'bg-crimson-500/20 text-crimson-400 border-crimson-500/50'
+            : isOfficer
+            ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50'
+            : 'bg-white/10 text-gray-300 border-white/20';
+
+          return `
+            <div
+              class="tactical-card holo-card rounded-2xl p-6 border ${accentBorder} flex flex-col justify-between"
+              onmousemove="handleCardTilt(event, this)"
+              onmouseleave="resetCardTilt(this)"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-4">
+                  <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 font-tactical font-bold text-[11px] tracking-widest uppercase ${
+                    member.guild === 'guild1' ? 'text-crimson-400' : 'text-amber-400'
+                  }">
+                    ${member.guildLabel}
+                  </span>
+                  <span class="font-tactical font-bold text-[11px] tracking-widest uppercase text-gray-500">
+                    ${member.badge}
+                  </span>
+                </div>
+
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-2xl border ${iconColor} flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid ${member.icon}"></i>
+                  </div>
+                  <div>
+                    <div class="font-tactical font-bold text-xs uppercase tracking-widest text-gray-400">
+                      ${member.role}
+                    </div>
+                    <h3 class="font-display font-black text-xl sm:text-2xl text-white tracking-wide">
+                      ${member.name}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5 pt-3.5 border-t border-white/10 flex items-center justify-between text-xs font-tactical font-bold uppercase tracking-wider text-gray-400">
+                <span><i class="fa-solid fa-circle text-[8px] text-emerald-400 mr-1.5"></i>Verified Admin</span>
+                <span class="text-gray-500">NLU COMMAND</span>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    function handleCardTilt(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -6;
+      const rotateY = ((x - centerX) / centerX) * 6;
+
+      card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+      card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+      card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    }
+
+    function resetCardTilt(card) {
+      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    }
+
+    /* ---------------------------------------------------------
+       6. FILTERABLE 13 DIRECTIVES ENGINE
+       --------------------------------------------------------- */
+    function filterRules() {
+      const query = (document.getElementById('rule-search')?.value || '').toLowerCase().trim();
+      const category = document.getElementById('rule-category')?.value || 'all';
+      const grid = document.getElementById('rules-grid');
+
+      const filtered = RULES_DATA.filter((rule) => {
+        const matchesCat = category === 'all' || rule.category === category;
+        const matchesText =
+          !query ||
+          rule.title.toLowerCase().includes(query) ||
+          rule.text.toLowerCase().includes(query) ||
+          rule.num.includes(query);
+        return matchesCat && matchesText;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full tactical-card rounded-2xl p-8 text-center text-gray-400">
+            <i class="fa-solid fa-filter-circle-xmark text-2xl text-crimson-500 mb-2"></i>
+            <p class="text-sm">No guild rules matched "<span class="text-white font-semibold">${query}</span>".</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered
+        .map((rule) => {
+          const isCritical =
+            rule.severity.includes('EXPULSION') ||
+            rule.severity.includes('INSTANT') ||
+            rule.severity.includes('BANNED') ||
+            rule.severity.includes('NO WARNING');
+
+          return `
+            <div class="tactical-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-3.5">
+                  <span class="font-display font-black text-lg text-crimson-500">RULE #${rule.num}</span>
+                  <span class="px-2.5 py-0.5 rounded-md font-tactical font-bold text-[11px] tracking-widest uppercase ${
+                    isCritical
+                      ? 'bg-crimson-500/20 text-crimson-400 border border-crimson-500/40'
+                      : 'bg-white/5 text-gray-300 border border-white/10'
+                  }">
+                    ${rule.severity}
+                  </span>
+                </div>
+                <h3 class="font-tactical font-bold text-lg text-white uppercase tracking-wide mb-2">
+                  ${rule.title}
+                </h3>
+                <p class="text-gray-300 text-sm leading-relaxed">
+                  ${rule.text}
+                </p>
+              </div>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    /* ---------------------------------------------------------
+       7. ARENA MODAL (RECRUIT CHECKLIST & GVG GENERATOR)
+       --------------------------------------------------------- */
+    function openArenaModal(mode = 'recruit') {
+      const modal = document.getElementById('arena-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setModalTab(mode);
+    }
+
+    function closeArenaModal() {
+      const modal = document.getElementById('arena-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function setModalTab(mode) {
+      const isRecruit = mode === 'recruit';
+      document.getElementById('modal-panel-recruit').classList.toggle('hidden', !isRecruit);
+      document.getElementById('modal-panel-gvg').classList.toggle('hidden', isRecruit);
+
+      document.getElementById('modal-tab-recruit').className = isRecruit
+        ? 'px-4 py-2 rounded-lg font-tactical font-bold text-xs uppercase tracking-wider bg-crimson-500 text-white cursor-pointer'
+        : 'px-4 py-2 rounded-lg font-tactical font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white cursor-pointer';
+
+      document.getElementById('modal-tab-gvg').className = !isRecruit
+        ? 'px-4 py-2 rounded-lg font-tactical font-bold text-xs uppercase tracking-wider bg-crimson-500 text-white cursor-pointer'
+        : 'px-4 py-2 rounded-lg font-tactical font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white cursor-pointer';
+    }
+
+    function updateRecruitStatus() {
+      const checks = Array.from(document.querySelectorAll('.recruit-check'));
+      const allChecked = checks.every((c) => c.checked);
+      const box = document.getElementById('recruit-result');
+
+      if (allChecked) {
+        box.className = 'p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/50 text-center';
+        box.innerHTML = `
+          <div class="font-display font-bold text-sm text-emerald-400 mb-3">
+            <i class="fa-solid fa-circle-check mr-1.5"></i>ELIGIBLE FOR NOT LIKE.US
+          </div>
+          <div class="grid grid-cols-2 gap-2.5">
+            <button onclick="copyText('3038790506', 'Guild 1 UID copied! Send request in-game.')" class="py-2.5 px-3 rounded-xl bg-crimson-500 hover:bg-crimson-600 text-white font-tactical font-bold text-xs uppercase tracking-wider cursor-pointer">
+              Copy Guild 1 UID
+            </button>
+            <button onclick="copyText('3095570224', 'Guild 2 UID copied! Send request in-game.')" class="py-2.5 px-3 rounded-xl bg-white/15 hover:bg-white/25 text-white font-tactical font-bold text-xs uppercase tracking-wider cursor-pointer">
+              Copy Guild 2 UID
+            </button>
+          </div>
+        `;
+      } else {
+        const remaining = checks.filter((c) => !c.checked).length;
+        box.className = 'p-4 rounded-2xl bg-white/5 border border-white/10 text-center';
+        box.innerHTML = `
+          <div class="font-tactical font-bold text-sm uppercase tracking-wider text-gray-400">
+            ${remaining} requirement${remaining > 1 ? 's' : ''} remaining to unlock UIDs
+          </div>
+        `;
+      }
+    }
+
+    function updateGvgPreview() {
+      const guild = document.getElementById('gvg-guild')?.value.trim() || '[Your Guild Name & UID]';
+      const format = document.getElementById('gvg-format')?.value || '4v4 Clash Squad';
+      const target = document.getElementById('gvg-target')?.value || 'NLU Guild 1 (Leader: Mr P)';
+      const time = document.getElementById('gvg-time')?.value.trim() || '[Day & Time]';
+
+      const text = `⚔️ OFFICIAL GVG CHALLENGE — NOT LIKE.US ⚔️
+• Challenging Guild: ${guild}
+• Target Division: ${target}
+• Match Format: ${format}
+• Proposed Schedule: ${time}
+• Duel Rules: Alok/K + Passives (Sonia Banned)
+
+Requesting NLU Admin confirmation.`;
+
+      const previewEl = document.getElementById('gvg-preview');
+      if (previewEl) previewEl.textContent = text;
+    }
+
+    function copyGvgMessage() {
+      const text = document.getElementById('gvg-preview')?.textContent || '';
+      copyText(text, 'GvG Challenge brief copied! Paste to an NLU Admin.');
+    }
+
+    /* ---------------------------------------------------------
+       8. LIGHTWEIGHT FIRE EMBER PARTICLE CANVAS
+       --------------------------------------------------------- */
+    function initEmberParticles() {
+      const canvas = document.getElementById('ember-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const particleCount = Math.min(48, Math.floor(width / 28));
+      const particles = Array.from({ length: particleCount }, () => createParticle(width, height));
+
+      function createParticle(w, h) {
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 2.4 + 0.8,
+          speedY: -(Math.random() * 0.75 + 0.25),
+          speedX: (Math.random() - 0.5) * 0.4,
+          alpha: Math.random() * 0.65 + 0.2,
+          color: Math.random() > 0.3 ? '#ff1e38' : '#ff9d2e'
+        };
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let p of particles) {
+          p.y += p.speedY;
+          p.x += p.speedX + Math.sin(p.y * 0.015) * 0.18;
+
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = p.color;
+          ctx.fill();
+        }
+
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+  </script>
+</body>
+</html>
