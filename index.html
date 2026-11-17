@@ -793,7 +793,7 @@
       <div class="w-full flex items-center justify-between mb-4 pr-10">
         <div>
           <div class="font-tactical font-bold text-xs uppercase tracking-widest text-amber-400">NLU COMBAT SIMULATOR</div>
-          <h3 class="font-display font-black text-lg sm:text-xl text-white">TACTICAL BREACH // FAST MONSTER ELIMINATION</h3>
+          <h3 class="font-display font-black text-lg sm:text-xl text-white">TACTICAL BREACH // SLOW-PACED TARGET PRACTICE</h3>
         </div>
         <div class="flex items-center gap-4 text-xs font-tactical font-bold">
           <div class="px-3 py-1 rounded-lg bg-cyber-950 border border-white/15 text-emerald-400">
@@ -814,22 +814,22 @@
           <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500 text-amber-400 flex items-center justify-center text-2xl mb-4 shadow-[0_0_20px_rgba(245,158,11,0.4)]">
             <i class="fa-solid fa-crosshairs"></i>
           </div>
-          <h4 class="font-display font-black text-2xl text-white mb-2">EXTREME PERIMETER DEFENSE</h4>
+          <h4 class="font-display font-black text-2xl text-white mb-2">TARGET PRACTICE MODE</h4>
           <p class="text-xs sm:text-sm text-gray-300 max-w-md mb-6 leading-relaxed">
-            Fast mutant monsters are rushing the NLU zone at high speed! <strong class="text-amber-400">Click rapidly</strong> to aim your weapon and blast them before they breach your lines.
+            Monsters are now moving at a <strong class="text-amber-400">slow, manageable speed</strong>. Aim your weapon and pick them off one by one!
           </p>
           <button
             onclick="startMiniGame()"
             class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-110 text-cyber-950 font-tactical font-black text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all cursor-pointer"
           >
-            <i class="fa-solid fa-play mr-2"></i>START FAST-PACED COMBAT
+            <i class="fa-solid fa-play mr-2"></i>START TARGET PRACTICE
           </button>
         </div>
       </div>
 
       <div class="flex items-center justify-between w-full mt-4 text-[11px] font-tactical font-bold uppercase tracking-wider text-gray-400 px-1">
-        <span>Controls: Rapid Click / Tap to Shoot Rifle</span>
-        <span class="text-amber-400">High Velocity Mutant Attack</span>
+        <span>Controls: Aim & Click to Shoot Rifle</span>
+        <span class="text-amber-400">Slow Monster Speed Enabled</span>
       </div>
     </div>
   </div>
@@ -1544,7 +1544,7 @@ Requesting NLU Admin confirmation.`;
     }
 
     /* ---------------------------------------------------------
-       9. NLU MINI-GAME FAST SHOOTER ENGINE (PLAYER WITH GUN & FAST MONSTER 👹)
+       9. NLU MINI-GAME SLOW SHOOTER ENGINE (PLAYER WITH GUN & SLOW MONSTER 👹)
        --------------------------------------------------------- */
     let gameInterval = null;
     let gameRunning = false;
@@ -1637,14 +1637,14 @@ Requesting NLU Admin confirmation.`;
     }
 
     function spawnMonster() {
-      // High frequency & high speed monster spawning
-      if (Math.random() < 0.07 && monsters.length < 12) {
+      // Slower spawn rate and fewer max monsters on screen at once
+      if (Math.random() < 0.03 && monsters.length < 5) {
         const x = Math.random() * (canvas.width - 60) + 30;
         monsters.push({
           x: x,
           y: -40,
-          radius: 20,
-          speed: Math.random() * 2.2 + 1.8, // VERY FAST SPEED
+          radius: 22,
+          speed: Math.random() * 0.5 + 0.5, // SLOW SPEED (0.5 to 1.0 px per frame)
           hp: 2,
           color: Math.random() > 0.3 ? '#ff1e38' : '#ff9d2e',
           wobble: Math.random() * Math.PI
@@ -1657,7 +1657,7 @@ Requesting NLU Admin confirmation.`;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Spawn Fast Monsters
+      // Spawn Slow Monsters
       spawnMonster();
 
       // Update Bullets
@@ -1680,12 +1680,12 @@ Requesting NLU Admin confirmation.`;
         }
       }
 
-      // Update Fast Monsters 👹
+      // Update Slow Monsters 👹
       for (let i = monsters.length - 1; i >= 0; i--) {
         let m = monsters[i];
-        m.y += m.speed; // Fast descent
-        m.wobble += 0.1;
-        let currentX = m.x + Math.sin(m.wobble) * 8; // Sinusoidal tactical evasion movement
+        m.y += m.speed; // Slow descent
+        m.wobble += 0.04;
+        let currentX = m.x + Math.sin(m.wobble) * 6; // Gentle sway
 
         // Draw Monster 👹
         ctx.save();
@@ -1731,7 +1731,7 @@ Requesting NLU Admin confirmation.`;
             m.hp--;
             bullets.splice(j, 1);
             if (m.hp <= 0) {
-              score += 150;
+              score += 100;
               monsters.splice(i, 1);
               updateScoreUI();
               break;
@@ -1741,7 +1741,7 @@ Requesting NLU Admin confirmation.`;
 
         // Check if Monster Reaches Bottom (Player HP damage)
         if (m.y > canvas.height - 30) {
-          playerHp -= 20;
+          playerHp -= 15;
           monsters.splice(i, 1);
           updateScoreUI();
           if (playerHp <= 0) {
@@ -1801,8 +1801,8 @@ Requesting NLU Admin confirmation.`;
         <div class="w-16 h-16 rounded-2xl bg-crimson-500/20 border border-crimson-500 text-crimson-500 flex items-center justify-center text-2xl mb-4 shadow-[0_0_20px_rgba(255,30,56,0.4)]">
           <i class="fa-solid fa-skull"></i>
         </div>
-        <h4 class="font-display font-black text-2xl text-white mb-1">PERIMETER BREACHED</h4>
-        <p class="text-xs text-gray-400 mb-2">The fast monsters overwhelmed your rifle defense.</p>
+        <h4 class="font-display font-black text-2xl text-white mb-1">MISSION FAILED</h4>
+        <p class="text-xs text-gray-400 mb-2">Monsters reached your defense perimeter.</p>
         <div class="font-display font-bold text-lg text-amber-400 mb-6">FINAL SCORE: ${score}</div>
         <button
           onclick="startMiniGame()"
