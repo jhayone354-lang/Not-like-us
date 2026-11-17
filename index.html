@@ -252,6 +252,12 @@
       <!-- Action Buttons -->
       <div class="flex items-center gap-2.5">
         <button
+          onclick="openMiniGameModal()"
+          class="px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/60 font-tactical font-bold text-xs sm:text-sm tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] cursor-pointer"
+        >
+          <i class="fa-solid fa-gamepad mr-1.5"></i>Play Mini-Game
+        </button>
+        <button
           onclick="openArenaModal('gvg')"
           class="px-3.5 py-2 rounded-xl bg-crimson-500/15 hover:bg-crimson-500 text-crimson-400 hover:text-white border border-crimson-500/50 font-tactical font-bold text-xs sm:text-sm tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(255,30,56,0.2)] cursor-pointer"
         >
@@ -771,7 +777,65 @@
   </div>
 
   <!-- =========================================================
-       JAVASCRIPT LOGIC (PARTICLES, SCHEDULE, ROSTER, RULES, UI)
+       MINI-GAME SHOOTER MODAL (NLU TACTICAL BREACH)
+       ========================================================= -->
+  <div id="minigame-modal" class="fixed inset-0 z-[95] hidden items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+    <div class="tactical-card rounded-3xl max-w-2xl w-full p-5 sm:p-6 relative border-amber-500/50 shadow-[0_0_60px_rgba(245,158,11,0.25)] flex flex-col items-center">
+      <!-- Close Button -->
+      <button
+        onclick="closeMiniGameModal()"
+        class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-white/10 hover:bg-crimson-500 text-gray-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer z-10"
+        aria-label="Close Mini-Game"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="w-full flex items-center justify-between mb-4 pr-10">
+        <div>
+          <div class="font-tactical font-bold text-xs uppercase tracking-widest text-amber-400">NLU COMBAT SIMULATOR</div>
+          <h3 class="font-display font-black text-lg sm:text-xl text-white">TACTICAL BREACH // MONSTER ELIMINATION</h3>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-tactical font-bold">
+          <div class="px-3 py-1 rounded-lg bg-cyber-950 border border-white/15 text-emerald-400">
+            SCORE: <span id="game-score">0</span>
+          </div>
+          <div class="px-3 py-1 rounded-lg bg-cyber-950 border border-white/15 text-crimson-400">
+            HP: <span id="game-hp">100</span>%
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Canvas Container -->
+      <div class="relative w-full aspect-[16/10] bg-cyber-950 rounded-2xl overflow-hidden border border-white/15 shadow-inner cursor-crosshair">
+        <canvas id="shooter-canvas" class="w-full h-full block"></canvas>
+
+        <!-- Start Overlay -->
+        <div id="game-overlay" class="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center z-20">
+          <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500 text-amber-400 flex items-center justify-center text-2xl mb-4 shadow-[0_0_20px_rgba(245,158,11,0.4)]">
+            <i class="fa-solid fa-crosshairs"></i>
+          </div>
+          <h4 class="font-display font-black text-2xl text-white mb-2">DEFEND THE NLU ZONE</h4>
+          <p class="text-xs sm:text-sm text-gray-300 max-w-md mb-6 leading-relaxed">
+            Mutant monsters are breaching the perimeter! <strong class="text-amber-400">Click or Tap</strong> to fire your rifle. Prevent monsters from reaching your tactical position.
+          </p>
+          <button
+            onclick="startMiniGame()"
+            class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-110 text-cyber-950 font-tactical font-black text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(245,158,11,0.5)] transition-all cursor-pointer"
+          >
+            <i class="fa-solid fa-play mr-2"></i>START COMBAT MISSION
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between w-full mt-4 text-[11px] font-tactical font-bold uppercase tracking-wider text-gray-400 px-1">
+        <span>Controls: Mouse Left Click / Tap to Shoot</span>
+        <span class="text-amber-400">Eliminate Mutants to Earn High Score</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       JAVASCRIPT LOGIC (PARTICLES, SCHEDULE, ROSTER, RULES, SHOOTER GAME)
        ========================================================= -->
   <script>
     /* ---------------------------------------------------------
@@ -1477,6 +1541,217 @@ Requesting NLU Admin confirmation.`;
       }
 
       animate();
+    }
+
+    /* ---------------------------------------------------------
+       9. NLU MINI-GAME SHOOTER ENGINE
+       --------------------------------------------------------- */
+    let gameInterval = null;
+    let gameRunning = false;
+    let score = 0;
+    let playerHp = 100;
+    let monsters = [];
+    let bullets = [];
+    let particles = [];
+    let canvas, ctx;
+    let playerX, playerY;
+
+    function openMiniGameModal() {
+      const modal = document.getElementById('minigame-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setupGameCanvas();
+    }
+
+    function closeMiniGameModal() {
+      const modal = document.getElementById('minigame-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      gameRunning = false;
+      if (gameInterval) cancelAnimationFrame(gameInterval);
+      document.getElementById('game-overlay').style.display = 'flex';
+    }
+
+    function setupGameCanvas() {
+      canvas = document.getElementById('shooter-canvas');
+      ctx = canvas.getContext('2d');
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+      playerX = canvas.width / 2;
+      playerY = canvas.height - 40;
+
+      canvas.onmousedown = (e) => {
+        if (!gameRunning) return;
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        fireBullet(mouseX, mouseY);
+      };
+
+      canvas.ontouchstart = (e) => {
+        if (!gameRunning) return;
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const touchX = touch.clientX - rect.left;
+        const touchY = touch.clientY - rect.top;
+        fireBullet(touchX, touchY);
+      };
+    }
+
+    function startMiniGame() {
+      document.getElementById('game-overlay').style.display = 'none';
+      score = 0;
+      playerHp = 100;
+      monsters = [];
+      bullets = [];
+      particles = [];
+      gameRunning = true;
+      updateScoreUI();
+      if (gameInterval) cancelAnimationFrame(gameInterval);
+      gameLoop();
+    }
+
+    function fireBullet(targetX, targetY) {
+      const angle = Math.atan2(targetY - playerY, targetX - playerX);
+      const speed = 12;
+      bullets.push({
+        x: playerX,
+        y: playerY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed
+      });
+    }
+
+    function spawnMonster() {
+      if (Math.random() < 0.045 && monsters.length < 8) {
+        const x = Math.random() * (canvas.width - 60) + 30;
+        monsters.push({
+          x: x,
+          y: -30,
+          radius: 18,
+          speed: Math.random() * 1.2 + 0.8,
+          hp: 2,
+          color: Math.random() > 0.4 ? '#ff1e38' : '#ff9d2e'
+        });
+      }
+    }
+
+    function gameLoop() {
+      if (!gameRunning) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Spawn
+      spawnMonster();
+
+      // Update Bullets
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        let b = bullets[i];
+        b.x += b.vx;
+        b.y += b.vy;
+
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffaa2b';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#ffaa2b';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        if (b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+          bullets.splice(i, 1);
+        }
+      }
+
+      // Update Monsters
+      for (let i = monsters.length - 1; i >= 0; i--) {
+        let m = monsters[i];
+        m.y += m.speed;
+
+        // Draw Monster (Spiky Mutant)
+        ctx.save();
+        ctx.translate(m.x, m.y);
+        ctx.beginPath();
+        ctx.arc(0, 0, m.radius, 0, Math.PI * 2);
+        ctx.fillStyle = m.color;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = m.color;
+        ctx.fill();
+
+        // Monster Horns / Eyes
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-6, -6, 4, 4);
+        ctx.fillRect(2, -6, 4, 4);
+        ctx.restore();
+
+        // Check Collision with Bullets
+        for (let j = bullets.length - 1; j >= 0; j--) {
+          let b = bullets[j];
+          const dist = Math.hypot(b.x - m.x, b.y - m.y);
+          if (dist < m.radius + 4) {
+            m.hp--;
+            bullets.splice(j, 1);
+            if (m.hp <= 0) {
+              score += 100;
+              monsters.splice(i, 1);
+              updateScoreUI();
+              break;
+            }
+          }
+        }
+
+        // Check if Monster Reaches Bottom (Player HP damage)
+        if (m.y > canvas.height - 30) {
+          playerHp -= 15;
+          monsters.splice(i, 1);
+          updateScoreUI();
+          if (playerHp <= 0) {
+            endGame();
+            return;
+          }
+        }
+      }
+
+      // Draw Player Operator at bottom center
+      ctx.save();
+      ctx.translate(playerX, playerY);
+      ctx.beginPath();
+      ctx.arc(0, 0, 16, 0, Math.PI * 2);
+      ctx.fillStyle = '#3b82f6';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#3b82f6';
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-3, -12, 6, 10);
+      ctx.restore();
+
+      gameInterval = requestAnimationFrame(gameLoop);
+    }
+
+    function updateScoreUI() {
+      document.getElementById('game-score').textContent = score;
+      document.getElementById('game-hp').textContent = Math.max(0, playerHp);
+    }
+
+    function endGame() {
+      gameRunning = false;
+      const overlay = document.getElementById('game-overlay');
+      overlay.style.display = 'flex';
+      overlay.innerHTML = `
+        <div class="w-16 h-16 rounded-2xl bg-crimson-500/20 border border-crimson-500 text-crimson-500 flex items-center justify-center text-2xl mb-4 shadow-[0_0_20px_rgba(255,30,56,0.4)]">
+          <i class="fa-solid fa-skull"></i>
+        </div>
+        <h4 class="font-display font-black text-2xl text-white mb-1">MISSION FAILED</h4>
+        <p class="text-xs text-gray-400 mb-2">Monsters breached the NLU defense line.</p>
+        <div class="font-display font-bold text-lg text-amber-400 mb-6">FINAL SCORE: ${score}</div>
+        <button
+          onclick="startMiniGame()"
+          class="px-8 py-3.5 rounded-xl bg-crimson-500 hover:bg-crimson-600 text-white font-tactical font-black text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(255,30,56,0.5)] transition-all cursor-pointer"
+        >
+          <i class="fa-solid fa-rotate-right mr-2"></i>TRY AGAIN
+        </button>
+      `;
     }
   </script>
 </body>
